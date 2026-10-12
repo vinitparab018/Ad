@@ -18,6 +18,18 @@ NewsOrbit is an original Indian news/blogging portal starter with a publishing d
 
 The SQLite database is created automatically at `src/newsorbit.sqlite`. Never commit `.env`, database files, or backups containing subscriber data.
 
+## Deploy to Render (free testing)
+
+The repository includes a Render Blueprint in `render.yaml`. To deploy:
+
+1. Sign in to Render and create a new Blueprint from `vinitparab018/Ad`, using the `main` branch.
+2. When prompted, provide `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` of at least 14 characters. Render generates `SESSION_SECRET`.
+3. Deploy the `newsorbit` web service and open its `onrender.com` URL. Use that URL, not `https://vinitparab018.github.io/`; GitHub Pages only serves static files and cannot run this app's Node.js API or SQLite-backed admin.
+
+This blueprint uses Render's free web-service plan for testing. Its filesystem and SQLite database are temporary: articles, accounts, and sessions can be lost whenever the service sleeps, restarts, or redeploys. Free services also spin down when idle. Do not use this configuration for real publishing or subscriber data. For persistent production storage, upgrade to a paid web service with a persistent disk mounted at `/var/data`, set `SQLITE_PATH=/var/data/newsorbit.sqlite`, or migrate the application to a managed database.
+
+The blueprint runs `npm run create-admin` at startup using the configured admin environment variables. Updating those variables and redeploying changes the bootstrap admin credentials.
+
 ## Admin workflow
 - Sign in at `/admin/login.html`.
 - Choose **New article** to open the editor.
@@ -55,7 +67,7 @@ The visual ad placeholders are not ads. After approval, use only the official co
 The current runnable implementation uses SQLite. `src/postgres-schema.sql` is a reference PostgreSQL schema for migration planning, not a runtime adapter. Moving production to PostgreSQL requires replacing SQLite-specific SQL (`?` placeholders, `INSERT OR IGNORE`, `lastInsertRowid`, and SQLite session storage) with PostgreSQL equivalents, adding a migration process and a PostgreSQL-backed session store, and testing transaction behavior. Do not merely set a database URL and assume the app has switched. For a production multi-instance deployment, PostgreSQL plus a shared session store is recommended.
 
 ## Production deployment checklist
-1. Use a persistent Node.js hosting service and managed PostgreSQL once migrating the database layer.
+1. Use a persistent Node.js hosting service and persistent storage; the free Render Blueprint is for testing only.
 2. Add environment variables in the host dashboard; do not upload `.env`.
 3. Set `NODE_ENV=production`, `SITE_URL=https://your-domain.example`, `SESSION_SECRET`, admin credentials, and approved provider configuration.
 4. Enable HTTPS and configure trusted proxy settings only according to your host's documentation.

@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const path = require('path');
-const db = new Database(process.env.SQLITE_PATH || path.join(__dirname, 'newsorbit.sqlite'));
+const databasePath = path.resolve(process.env.SQLITE_PATH || path.join(__dirname, 'newsorbit.sqlite'));
+const db = new Database(databasePath);
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 db.exec(`

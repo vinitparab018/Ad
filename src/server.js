@@ -14,13 +14,14 @@ const {csrf,csrfToken,csrfProtection,slugify,validHttpUrl}=require('./security')
 const {subscribe,unsubscribe}=require('./newsletter');
 const app=express(); const PORT=Number(process.env.PORT)||3000;
 if(process.env.NODE_ENV==='production' && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length<32)) throw new Error('Production requires SESSION_SECRET with at least 32 characters.');
-const SITE=(process.env.SITE_URL||`http://localhost:${PORT}`).replace(/\/$/,'');
+const SITE=(process.env.SITE_URL||process.env.RENDER_EXTERNAL_URL||`http://localhost:${PORT}`).replace(/\/$/,'');
+const sqliteDirectory=path.dirname(path.resolve(process.env.SQLITE_PATH||path.join(__dirname,'newsorbit.sqlite')));
 const categories=['India','World','Business & Finance','Technology & AI','Sports','Entertainment','Lifestyle & Health','Education & Career','Opinion','Latest News'];
 app.disable('x-powered-by');
 if(process.env.TRUST_PROXY==='1') app.set('trust proxy',1);
 app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'https:','data:'],connectSrc:["'self'"],objectSrc:["'none'"],frameAncestors:["'self'"],upgradeInsecureRequests:process.env.NODE_ENV==='production'?[]:null}}}));
 app.use(express.json({limit:'300kb'})); app.use(express.urlencoded({extended:false,limit:'300kb'}));
-app.use(session({name:'newsorbit.sid',secret:process.env.SESSION_SECRET||'development-only-change-this-session-secret-please',resave:false,saveUninitialized:false,rolling:true,store:new SQLiteStore({db:'sessions.sqlite',dir:path.join(__dirname)}),cookie:{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',maxAge:1000*60*60*8}}));
+app.use(session({name:'newsorbit.sid',secret:process.env.SESSION_SECRET||'development-only-change-this-session-secret-please',resave:false,saveUninitialized:false,rolling:true,store:new SQLiteStore({db:'sessions.sqlite',dir:sqliteDirectory}),cookie:{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',maxAge:1000*60*60*8}}));
 app.use('/api/',rateLimit({windowMs:60*1000,limit:120,standardHeaders:true,legacyHeaders:false}));
 const loginLimiter=rateLimit({windowMs:15*60*1000,limit:8,standardHeaders:true,legacyHeaders:false,message:{error:'Too many login attempts. Please wait 15 minutes.'}});
 app.use('/api/admin',csrfProtection);

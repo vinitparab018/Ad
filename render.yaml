@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: newsorbit
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm run create-admin && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SQLITE_PATH
+        value: /tmp/newsorbit.sqlite
+      - key: TRUST_PROXY
+        value: "1"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
