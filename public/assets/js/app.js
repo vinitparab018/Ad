@@ -4,7 +4,7 @@ const formatDate = value => { const date = new Date(value); return Number.isNaN(
 let homePage = 1;
 let homeRefreshInProgress = false;
 let lastHomeSnapshot = '';
-function storyUrl(article) { return `/story/${encodeURIComponent(article.slug)}`; }
+function storyUrl(article) { return `./article.html?slug=${encodeURIComponent(article.slug)}`; }
 function sourceLink(article) {
   if (!article.source_url) return '';
   return `<a class="source-link" href="${escapeHtml(article.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.source_name || 'Original source')} ↗</a>`;
@@ -15,18 +15,33 @@ function storyCard(article, index = 0) {
   return `<article class="article-card"><div class="card-image ${index % 2 ? 'image-alt' : ''}"><span>${escapeHtml(article.category || 'Latest')}</span><span class="image-glyph">${index % 3 === 0 ? '◈' : index % 3 === 1 ? '✳' : '◉'}</span></div><div class="card-body">${demo}<p class="card-meta">${escapeHtml(article.category)} · ${escapeHtml(formatDate(article.published_at))}</p><h3><a href="${storyUrl(article)}">${escapeHtml(article.title)}</a></h3><p class="card-summary">${escapeHtml(article.summary)}</p><div class="card-footer"><span>${escapeHtml(article.author || article.source_name || 'NewsOrbit')}</span>${source}</div></div></article>`;
 }
 async function getArticles(params = {}) {
+  if (window.location.hostname.endsWith('github.io')) return getStaticArticles(params);
   const url = new URL('/api/articles', window.location.origin);
   Object.entries(params).forEach(([key, value]) => { if (value !== '' && value != null) url.searchParams.set(key, value); });
   const response = await fetch(url, {cache:'no-store',headers:{Accept:'application/json'}});
-  if (!response.ok) throw new Error('Could not load stories. Please try again.');
-  return response.json();
+  if (response.ok) return response.json();
+  throw new Error('Could not load stories. Please try again.');
+}
+async function getStaticArticles(params) {
+  const staticResponse = await fetch('./data/articles.json');
+  if (!staticResponse.ok) throw new Error('Could not load the static demo stories.');
+  const articles = await staticResponse.json();
+  const category = params.category || '';
+  const query = String(params.q || '').toLowerCase();
+  const filtered = articles.filter(article =>
+    (!category || article.category === category) &&
+    (!query || `${article.title} ${article.summary} ${article.tags}`.toLowerCase().includes(query))
+  );
+  const page = Math.max(1, Number(params.page) || 1);
+  const limit = Math.max(1, Number(params.limit) || 8);
+  return {articles:filtered.slice((page - 1) * limit, page * limit),page,limit,total:filtered.length,pages:Math.ceil(filtered.length / limit)};
 }
 function setupCommon() {
   const date = $('#today-date'); if (date) date.textContent = new Intl.DateTimeFormat('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).format(new Date());
   const year = $('#year'); if (year) year.textContent = new Date().getFullYear();
   const toggle = $('#menu-toggle'); const nav = $('#primary-nav');
   if (toggle && nav) toggle.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') !== 'true'; toggle.setAttribute('aria-expanded', String(open)); toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); nav.classList.toggle('nav-open', open); });
-  const searchForm = $('#search-form'); if (searchForm) searchForm.addEventListener('submit', event => { event.preventDefault(); const query = $('#site-search').value.trim(); if (query) window.location.href = `/category.html?q=${encodeURIComponent(query)}`; });
+  const searchForm = $('#search-form'); if (searchForm) searchForm.addEventListener('submit', event => { event.preventDefault(); const query = $('#site-search').value.trim(); if (query) window.location.href = `./category.html?q=${encodeURIComponent(query)}`; });
   const newsletter = $('#newsletter-form'); if (newsletter) newsletter.addEventListener('submit', async event => { event.preventDefault(); const message = $('#newsletter-message'); const button = newsletter.querySelector('button[type=submit]'); if (message) message.textContent = 'Submitting…'; if(button) button.disabled = true; try { const response = await fetch('/api/newsletter/subscribe', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:$('#newsletter-email').value, consent:$('#newsletter-consent')?.checked === true})}); const data = await response.json(); if(!response.ok) throw new Error(data.error || 'Could not subscribe.'); if(message) message.textContent = data.message; newsletter.reset(); } catch(error) { if(message) message.textContent = error.message; } finally { if(button) button.disabled = false; } });
 }
 function renderPagination(container, page, pages, onPage) {
@@ -47,7 +62,9 @@ async function initHome({silent = false} = {}) {
     const snapshot = JSON.stringify({articles:data.articles,total:data.total});
     if (silent && snapshot === lastHomeSnapshot) {
       const status = $('#feed-update-status');
-      if (status) status.textContent = `Live feed checked at ${new Intl.DateTimeFormat('en-IN',{hour:'numeric',minute:'2-digit'}).format(new Date())}.`;
+      if (status) status.textContent = window.location.hostname.endsWith('github.io')
+        ? 'Static demo stories; live feeds are not available on GitHub Pages.'
+        : `Live feed checked at ${new Intl.DateTimeFormat('en-IN',{hour:'numeric',minute:'2-digit'}).format(new Date())}.`;
       return;
     }
     lastHomeSnapshot = snapshot;
@@ -84,8 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCommon();
   if ($('#featured-story')) {
     initHome();
-    window.setInterval(() => {
-      if (!document.hidden && homePage === 1) initHome({silent:true});
-    }, 60_000);
+    if (!window.location.hostname.endsWith('github.io')) {
+      window.setInterval(() => {
+        if (!document.hidden && homePage === 1) initHome({silent:true});
+      }, 60_000);
+    }
   }
 });

@@ -1,0 +1,44 @@
+[
+  {
+    "title": "How to read a major policy announcement",
+    "slug": "demo-policy-announcement",
+    "summary": "A sample explainer showing how NewsOrbit articles present context and key facts.",
+    "body": "This is demonstration content, not a real news report. Replace it with original reporting and verified sources.",
+    "category": "India",
+    "author": "NewsOrbit Demo Desk",
+    "source_name": "NewsOrbit Demo",
+    "source_url": null,
+    "tags": "policy, explainer",
+    "published_at": "2025-01-03T10:00:00.000Z",
+    "is_demo": true,
+    "featured": true
+  },
+  {
+    "title": "A beginner’s guide to understanding AI tools",
+    "slug": "demo-ai-tools-guide",
+    "summary": "A sample technology guide about evaluating AI tools and checking outputs.",
+    "body": "This is demonstration content. A real guide should include original research, hands-on testing, and reliable references.",
+    "category": "Technology & AI",
+    "author": "NewsOrbit Demo Desk",
+    "source_name": "NewsOrbit Demo",
+    "source_url": null,
+    "tags": "technology, AI, guide",
+    "published_at": "2025-01-02T10:00:00.000Z",
+    "is_demo": true,
+    "featured": false
+  },
+  {
+    "title": "Personal finance basics: building a monthly budget",
+    "slug": "demo-monthly-budget",
+    "summary": "A sample educational article demonstrating the finance category.",
+    "body": "This is demonstration content, not financial advice. Replace it with carefully researched original content.",
+    "category": "Business & Finance",
+    "author": "NewsOrbit Demo Desk",
+    "source_name": "NewsOrbit Demo",
+    "source_url": null,
+    "tags": "finance, budget, education",
+    "published_at": "2025-01-01T10:00:00.000Z",
+    "is_demo": true,
+    "featured": false
+  }
+]
