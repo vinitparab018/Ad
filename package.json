@@ -11,6 +11,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "create-admin": "node scripts/create-admin.js",
+    "export-pages": "node scripts/export-pages-articles.js && node scripts/build-pages.js",
     "check": "node --check src/server.js && node --check src/database.js && node --check src/news-provider.js && node --check public/assets/js/admin.js && node --check public/assets/js/admin-login.js && node --check public/assets/js/editor.js && node --check public/assets/js/category.js && node --check public/assets/js/app.js && node --check src/newsletter.js && node --check src/security.js && node --check scripts/create-admin.js"
   },
   "dependencies": {

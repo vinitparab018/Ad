@@ -32,11 +32,12 @@ The blueprint runs `npm run create-admin` at startup using the configured admin 
 
 ## Deploy a static demo to GitHub Pages
 
-GitHub Pages cannot run this app's Express server, SQLite database, admin dashboard, live news feed, or newsletter subscription endpoint. The Pages workflow publishes a read-only static demo with sample stories instead; it does not publish the admin pages or `.env`.
+GitHub Pages cannot run this app's Express server, SQLite database, admin dashboard, live news feed, or newsletter subscription endpoint. It publishes a read-only static site containing the stories exported to `public/data/articles.json`; it does not publish the admin pages, database, or `.env`.
 
 1. In the GitHub repository, open **Settings → Pages** and set **Build and deployment → Source** to **GitHub Actions**.
-2. Push to `main` or run **Deploy static demo to GitHub Pages** from the **Actions** tab.
-3. Open the project-site URL `https://vinitparab018.github.io/Ad/`. Since this repository is named `Ad`, its project site is under `/Ad/`; the root URL `https://vinitparab018.github.io/` is a separate user site and requires a repository named `vinitparab018.github.io`.
+2. Before publishing updated articles, run `npm run export-pages` locally. This exports currently published articles from your SQLite database, retaining source attribution and excluding full article bodies and images for non-demo stories.
+3. Review `public/data/articles.json` to ensure you have the rights to publish every exported title and summary, then commit and push that file to `main`. The Pages workflow builds and publishes the static site automatically.
+4. Open the project-site URL `https://vinitparab018.github.io/Ad/`. Since this repository is named `Ad`, its project site is under `/Ad/`; the root URL `https://vinitparab018.github.io/` is a separate user site and requires a repository named `vinitparab018.github.io`.
 
 Use Render (above) if you need the complete Node.js app, login, publishing dashboard, database, feeds, or newsletter API.
 
