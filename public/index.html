@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10243a"><meta name="description" content="NewsOrbit brings together news explainers, technology, business, sports and original stories for curious readers.">
+  <link rel="canonical" href="/">
+  <meta property="og:type" content="website"><meta property="og:title" content="NewsOrbit — Understand the news"><meta property="og:description" content="News, explainers and original stories for curious readers.">
+  <title>NewsOrbit — Understand the news. See the bigger picture.</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/css/styles.css">
+  <script src="/assets/js/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topline"><div class="container topline-inner"><span>Independent stories. Useful context.</span><span id="today-date"></span></div></div>
+<header class="site-header"><div class="container header-main">
+  <a class="brand" href="/" aria-label="NewsOrbit home"><span class="brand-mark">N</span><span>News<span class="brand-accent">Orbit</span><small>INDIA · WORLD · IDEAS</small></span></a>
+  <form id="search-form" class="search-form" role="search"><label class="sr-only" for="site-search">Search articles</label><input id="site-search" name="q" type="search" placeholder="Search stories, topics..." maxlength="120"><button aria-label="Search" type="submit">⌕</button></form>
+  <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">☰</button>
+</div>
+<nav id="primary-nav" class="primary-nav" aria-label="Main navigation"><div class="container nav-inner">
+  <a class="active" href="/">Home</a><a href="/category.html?name=India">India</a><a href="/category.html?name=World">World</a><a href="/category.html?name=Business%20%26%20Finance">Business</a><a href="/category.html?name=Technology%20%26%20AI">Technology &amp; AI</a><a href="/category.html?name=Sports">Sports</a><a href="/category.html?name=Entertainment">Entertainment</a><a href="/category.html?name=Lifestyle%20%26%20Health">Lifestyle</a><a href="/category.html?name=Education%20%26%20Career">Education &amp; Career</a>
+</div></nav></header>
+<main id="main" class="container page-content">
+  <div class="breaking"><span class="breaking-label">THE LATEST</span><span id="breaking-text">Stories and explainers, updated when a configured feed is available.</span><a href="#latest">Explore latest ↓</a></div>
+  <div class="ad-slot ad-top" aria-label="Advertisement placeholder"><span>ADVERTISEMENT</span><strong>Ad placement reserved</strong><small>Replace with official AdSense code only after approval.</small></div>
+  <section class="hero-grid" aria-labelledby="top-stories-title"><div class="section-heading"><div><p class="eyebrow">THE DAILY BRIEF</p><h1 id="top-stories-title">Stories that put the world in context.</h1></div><p class="section-note">Clear reporting. Helpful explainers. Fresh perspectives.</p></div>
+    <div id="featured-story" class="featured-story"><div class="skeleton skeleton-feature"></div></div>
+    <div class="hero-side"><div class="side-title"><h2>Trending reads</h2><span class="dot"></span></div><div id="trending-list" class="trending-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div>
+  </section>
+  <section class="category-ribbon" aria-label="Browse categories"><a href="/category.html?name=India">India <span>↗</span></a><a href="/category.html?name=World">World <span>↗</span></a><a href="/category.html?name=Business%20%26%20Finance">Business <span>↗</span></a><a href="/category.html?name=Technology%20%26%20AI">Technology <span>↗</span></a><a href="/category.html?name=Sports">Sports <span>↗</span></a><a href="/category.html?name=Opinion">Opinion <span>↗</span></a></section>
+  <section id="latest" class="latest-section"><div class="section-heading"><div><p class="eyebrow">WHAT'S NEW</p><h2>Latest stories</h2><p id="feed-update-status" class="muted" aria-live="polite">Live updates check every minute.</p></div><span id="result-count" class="muted"></span></div><div id="latest-grid" class="article-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div><div class="pagination" id="pagination"></div></section>
+  <section class="newsletter"><div><p class="eyebrow">THE NEWSORBIT NOTE</p><h2>A little more context in your inbox.</h2><p>Occasional original stories and useful explainers. You can unsubscribe at any time.</p></div><form id="newsletter-form"><label class="sr-only" for="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="you@example.com" autocomplete="email" required><label class="newsletter-consent"><input id="newsletter-consent" type="checkbox" required> I agree to receive the NewsOrbit newsletter and understand I can unsubscribe.</label><button type="submit">Subscribe</button><small id="newsletter-message" role="status">We only use this address for newsletter delivery.</small></form></section>
+</main>
+<footer class="site-footer"><div class="container footer-grid"><div><a class="brand footer-brand" href="/"><span class="brand-mark">N</span><span>News<span class="brand-accent">Orbit</span><small>INDIA · WORLD · IDEAS</small></span></a><p>News and original explainers designed to help readers understand what matters.</p></div><div><h3>Explore</h3><a href="/category.html?name=India">India</a><a href="/category.html?name=Technology%20%26%20AI">Technology &amp; AI</a><a href="/category.html?name=Business%20%26%20Finance">Business &amp; Finance</a><a href="/category.html?name=Opinion">Opinion</a></div><div><h3>About NewsOrbit</h3><a href="/about.html">About Us</a><a href="/contact.html">Contact Us</a><a href="/editorial-policy.html">Editorial Policy</a><a href="/disclaimer.html">Disclaimer</a></div><div><h3>Policies</h3><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms &amp; Conditions</a><p class="footer-small">Policy pages must be reviewed and customized before launch.</p></div></div><div class="container footer-bottom"><span>© <span id="year"></span> NewsOrbit</span><span>Demo stories are labeled. External stories link to their source.</span></div></footer>
+</body></html>
