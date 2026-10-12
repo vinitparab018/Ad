@@ -32,6 +32,9 @@ function copyDirectory(from, to) {
       if (entry.name === 'index.html') {
         html = html.replace(/<form id="newsletter-form">[\s\S]*?<\/form>/, '<p class="muted">Newsletter signup is not available on this static GitHub Pages demo.</p>');
       }
+      if (!html.includes('window.NEWSORBIT_STATIC')) {
+        html = html.replace('</head>', '  <script>window.NEWSORBIT_STATIC = true;</script>\n</head>');
+      }
       if (!html.includes('ca-pub-8741669636435207')) {
         html = html.replace('</head>', `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8741669636435207"
      crossorigin="anonymous"></script>

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(!slug){root.innerHTML='<div class="error-state"><h1>Article not specified</h1><p>Choose a story from the homepage.</p><a href="./">Return home</a></div>';return;}
   try {
     let a;
-    if(location.hostname.endsWith('github.io')) {
+    if(window.NEWSORBIT_STATIC === true || location.hostname.endsWith('github.io')) {
       const staticResponse=await fetch('./data/articles.json');
       if(!staticResponse.ok) throw new Error('The static demo stories could not be loaded.');
       a=(await staticResponse.json()).find(item=>item.slug===slug);

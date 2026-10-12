@@ -20,7 +20,7 @@ async function load(page) {
   const url = new URL('/api/articles', location.origin); url.searchParams.set('page',page); url.searchParams.set('limit',9); if(category) url.searchParams.set('category',category); if(query) url.searchParams.set('q',query);
   try {
     let data;
-    if (location.hostname.endsWith('github.io')) {
+    if (window.NEWSORBIT_STATIC === true || location.hostname.endsWith('github.io')) {
       const staticResponse = await fetch('./data/articles.json');
       if (!staticResponse.ok) throw new Error('Could not load the static demo stories.');
       const articles = await staticResponse.json();

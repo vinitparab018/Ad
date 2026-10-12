@@ -15,7 +15,7 @@ function storyCard(article, index = 0) {
   return `<article class="article-card"><div class="card-image ${index % 2 ? 'image-alt' : ''}"><span>${escapeHtml(article.category || 'Latest')}</span><span class="image-glyph">${index % 3 === 0 ? '◈' : index % 3 === 1 ? '✳' : '◉'}</span></div><div class="card-body">${demo}<p class="card-meta">${escapeHtml(article.category)} · ${escapeHtml(formatDate(article.published_at))}</p><h3><a href="${storyUrl(article)}">${escapeHtml(article.title)}</a></h3><p class="card-summary">${escapeHtml(article.summary)}</p><div class="card-footer"><span>${escapeHtml(article.author || article.source_name || 'NewsOrbit')}</span>${source}</div></div></article>`;
 }
 async function getArticles(params = {}) {
-  if (window.location.hostname.endsWith('github.io')) return getStaticArticles(params);
+  if (window.NEWSORBIT_STATIC === true || window.location.hostname.endsWith('github.io')) return getStaticArticles(params);
   const url = new URL('/api/articles', window.location.origin);
   Object.entries(params).forEach(([key, value]) => { if (value !== '' && value != null) url.searchParams.set(key, value); });
   const response = await fetch(url, {cache:'no-store',headers:{Accept:'application/json'}});
@@ -62,7 +62,7 @@ async function initHome({silent = false} = {}) {
     const snapshot = JSON.stringify({articles:data.articles,total:data.total});
     if (silent && snapshot === lastHomeSnapshot) {
       const status = $('#feed-update-status');
-      if (status) status.textContent = window.location.hostname.endsWith('github.io')
+      if (status) status.textContent = window.NEWSORBIT_STATIC === true || window.location.hostname.endsWith('github.io')
         ? 'Static demo stories; live feeds are not available on GitHub Pages.'
         : `Live feed checked at ${new Intl.DateTimeFormat('en-IN',{hour:'numeric',minute:'2-digit'}).format(new Date())}.`;
       return;
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCommon();
   if ($('#featured-story')) {
     initHome();
-    if (!window.location.hostname.endsWith('github.io')) {
+    if (window.NEWSORBIT_STATIC !== true && !window.location.hostname.endsWith('github.io')) {
       window.setInterval(() => {
         if (!document.hidden && homePage === 1) initHome({silent:true});
       }, 60_000);
