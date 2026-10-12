@@ -35,7 +35,10 @@ function copyDirectory(from, to) {
       if (!html.includes('window.NEWSORBIT_STATIC')) {
         html = html.replace('</head>', '  <script>window.NEWSORBIT_STATIC = true;</script>\n</head>');
       }
-      if (!html.includes('ca-pub-8741669636435207')) {
+      if (!html.includes('google-adsense-account')) {
+        html = html.replace('</head>', '  <meta name="google-adsense-account" content="ca-pub-8741669636435207">\n</head>');
+      }
+      if (!html.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')) {
         html = html.replace('</head>', `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8741669636435207"
      crossorigin="anonymous"></script>
 </head>`);
